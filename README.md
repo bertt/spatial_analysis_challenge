@@ -9,6 +9,8 @@ Connect each school to the nearest college in the same administrative region.
 By Bert Temme
 Using GeoParquet and DuckDB
 
+Result live map see https://felt.com/map/Untitled-Map-GmBfHzyHR0KZJu9Cge0kbCB?loc=9.9968,76.5973,10.44z&share=1
+
 ## Create GeoParquet files
 ```
 $ duckdb 
