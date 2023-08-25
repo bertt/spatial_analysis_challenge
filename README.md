@@ -4,6 +4,8 @@
 Spatial Analysis challenge
 https://twitter.com/spatialthoughts/status/1695021747177951435
 
+Connect each school to the nearest college in the same administrative region. 
+
 By Bert Temme
 Using GeoParquet and DuckDB
 
