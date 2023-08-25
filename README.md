@@ -11,7 +11,7 @@ Using GeoParquet and DuckDB
 
 Result live map see https://felt.com/map/Spatial-Analysis-schools-and-colleges-GmBfHzyHR0KZJu9Cge0kbCB
 
-## Create GeoParquet files
+## Create Parquet tables
 ```
 $ duckdb 
 D load spatial;
