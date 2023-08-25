@@ -74,6 +74,9 @@ D COPY result TO 'result.parquet' (FORMAT PARQUET);
 
 ## Convert to GeoParquet
 
+![image](https://github.com/bertt/spatial_analysis_challenge/assets/538812/2685612d-c48c-43f9-83dd-4dd386d7478c)
+
+
 ```
 $ gpq convert result.parquet result1.parquet
 ```
