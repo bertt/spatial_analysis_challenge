@@ -11,6 +11,13 @@ Using GeoParquet and DuckDB
 
 Result live map see https://felt.com/map/Spatial-Analysis-schools-and-colleges-GmBfHzyHR0KZJu9Cge0kbCB
 
+# Start Duckdb with Spatial function 
+
+```
+$ duckdb 
+D load spatial;
+```
+
 ## spatial join the schools and admin areas
 
 ```
