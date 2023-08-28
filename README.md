@@ -11,36 +11,28 @@ Using GeoParquet and DuckDB
 
 Result live map see https://felt.com/map/Spatial-Analysis-schools-and-colleges-GmBfHzyHR0KZJu9Cge0kbCB
 
-## Create Parquet tables
-```
-$ duckdb 
-D load spatial;
-D create table schools as select * from st_read('data.gpkg', layer='schools');
-D create table admin_boundaries as select * from st_read('data.gpkg', layer='admin_boundaries');
-D create table colleges as select * from st_read('data.gpkg', layer='colleges');
-```
 ## spatial join the schools and admin areas
 
 ```
-D create table schools1 as SELECT s.osm_id as school_id, ST_GeomFromWKB(s.geom) AS school_geom, a.shapename as shapename
-FROM schools s
-JOIN admin_boundaries a ON ST_Intersects(ST_GeomFromWKB(s.geom), ST_GeomFromWKB(a.geom));
+D create table schools as SELECT s.osm_id as school_id, ST_GeomFromWKB(s.geom) AS school_geom, a.shapename as shapename
+FROM st_read('data.gpkg', layer='schools') s
+JOIN st_read('data.gpkg', layer='admin_boundaries') a ON ST_Intersects(ST_GeomFromWKB(s.geom), ST_GeomFromWKB(a.geom));
 ```
 
 ## spatial join the colleges and admin areas
 
 ```
-D create table colleges1 as SELECT c.osm_id as college_id, ST_GeomFromWKB(c.geom) AS college_geom, a.shapename as shapename
-FROM colleges c
-JOIN admin_boundaries a ON ST_Intersects(ST_GeomFromWKB(c.geom), ST_GeomFromWKB(a.geom));
+D create table colleges as SELECT c.osm_id as college_id, ST_GeomFromWKB(c.geom) AS college_geom, a.shapename as shapename
+FROM st_read('data.gpkg', layer='colleges') c
+JOIN st_read('data.gpkg', layer='admin_boundaries') a ON ST_Intersects(ST_GeomFromWKB(c.geom), ST_GeomFromWKB(a.geom));
 ```
 
 ## join colleges and schools on admin_boundary name
 
 ```
 D create table admin_schools_colleges as select s.shapename, c.shapename,  s.school_id as school_id, c.college_id as college_id, st_distance(c.college_geom, s.school_geom) as distance 
-from schools1 s 
-left join colleges1 c on 
+from schools s 
+left join colleges c on 
 c.shapename=s.shapename; 
 ```
 
@@ -63,11 +55,11 @@ INNER JOIN
 exclude the schools without a college in the admin_boundary
 
 ```
-D create table result as select st_aswkb(st_makeline(ST_GeomFromWKB(s.geom),  ST_GeomFromWKB(c.geom))) as geometry
+D create table result as select st_aswkb(st_makeline(s.school_geom,  c.college_geom)) as geometry
 from schools_colleges a
-left join schools s on a.school_id=s.osm_id
-left join colleges c on a.college_id=c.osm_id
-where c.geom is not null;
+left join schools s on a.school_id=s.school_id
+left join colleges c on a.college_id=c.college_id
+where c.college_geom is not null;
 ```
 
 ## export to parquet
